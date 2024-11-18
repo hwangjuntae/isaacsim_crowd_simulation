@@ -101,24 +101,20 @@ if __name__ == "__main__":
         group_colors.extend(["blue"] * group_size)  # 오른쪽 그룹은 파란색
         group_start_index += group_size
 
-    # initial_state를 NumPy 배열로 변환하면서 dtype을 명시적으로 지정
-    initial_state = np.array(initial_state, dtype=np.float64)
+    initial_state = np.array(initial_state)
 
     # 통로 형태의 장애물 정의
     obs = [
-        [-30, 30, 5, 5],    # 위쪽 경계
+        [-30, 30, 5, 5],  # 위쪽 경계
         [-30, 30, -5, -5],  # 아래쪽 경계
     ]
-
-    # obs를 NumPy 배열로 변환하면서 dtype을 명시적으로 지정
-    obs = np.array(obs, dtype=np.float64)
 
     # 시뮬레이터 초기화
     s = psf.Simulator(
         initial_state,
         groups=groups,
         obstacles=obs,
-        config_file=Path(__file__).resolve().parent.joinpath("example.toml"),
+        # config_file=Path(__file__).resolve().parent.joinpath("example.toml"),
     )
 
     # 시뮬레이션 실행
@@ -126,6 +122,7 @@ if __name__ == "__main__":
 
     # 결과 시각화 및 저장
     with psf.plot.SceneVisualizer(s, "images/my_psf") as sv:
+
         # 보행자 색상 설정
         sv.agent_colors = group_colors  # 각 보행자의 색상 설정
 
