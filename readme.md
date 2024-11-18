@@ -5,7 +5,7 @@ cd ~/flow_ws/src
 git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 </code></pre>
 
-** edit pke name \<isaacsim_crowd_simulation\> to \<moving_people\> **
+**edit pke name \<isaacsim_crowd_simulation\> to \<moving_people\>**
 
 
 # 2. install dependencies pkgs
