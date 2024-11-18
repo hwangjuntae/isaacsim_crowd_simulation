@@ -1,7 +1,6 @@
 # 1. Workspace
 
-<pre><code>
-mkdir -p ~/flow_ws/src
+<pre><code>mkdir -p ~/flow_ws/src
 cd ~/flow_ws/src
 git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 </code></pre>
