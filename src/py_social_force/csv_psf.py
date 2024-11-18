@@ -4,6 +4,7 @@ import numpy as np
 import random
 import pysocialforce as psf
 import matplotlib.pyplot as plt
+import pandas as pd  # pandas 라이브러리 추가
 
 # 이미지 저장 디렉토리 생성
 Path("images").mkdir(exist_ok=True)
@@ -101,28 +102,47 @@ if __name__ == "__main__":
         group_colors.extend(["blue"] * group_size)  # 오른쪽 그룹은 파란색
         group_start_index += group_size
 
-    # initial_state를 NumPy 배열로 변환하면서 dtype을 명시적으로 지정
-    initial_state = np.array(initial_state, dtype=np.float64)
+    initial_state = np.array(initial_state)
 
     # 통로 형태의 장애물 정의
     obs = [
-        [-30, 30, 5, 5],    # 위쪽 경계
+        [-30, 30, 5, 5],  # 위쪽 경계
         [-30, 30, -5, -5],  # 아래쪽 경계
     ]
-
-    # obs를 NumPy 배열로 변환하면서 dtype을 명시적으로 지정
-    obs = np.array(obs, dtype=np.float64)
 
     # 시뮬레이터 초기화
     s = psf.Simulator(
         initial_state,
         groups=groups,
         obstacles=obs,
-        config_file=Path(__file__).resolve().parent.joinpath("example.toml"),
+        # config_file=Path(__file__).resolve().parent.joinpath("example.toml"),
     )
 
-    # 시뮬레이션 실행
-    s.step(300)
+    # 보행자 ID 설정
+    agent_ids = np.arange(len(initial_state)).reshape(-1, 1)
+
+    # 시뮬레이션 동안의 상태 저장을 위한 리스트 초기화
+    state_history = []
+
+    # 시뮬레이션 실행 및 데이터 수집
+    total_steps = 300
+    for t in range(total_steps):
+        s.step()
+        state = s.state.copy()
+        time_col = np.full((state.shape[0], 1), t)
+        # 시간, 에이전트 ID, 상태를 하나의 배열로 결합
+        state_with_time_id = np.hstack((time_col, agent_ids, state))
+        state_history.append(state_with_time_id)
+
+    # 시뮬레이션 결과를 DataFrame으로 변환
+    state_history_array = np.vstack(state_history)
+    df = pd.DataFrame(
+        state_history_array,
+        columns=['time', 'agent_id', 'x', 'y', 'vx', 'vy', 'goal_x', 'goal_y']
+    )
+
+    # CSV 파일로 저장
+    df.to_csv('agent_movements.csv', index=False)
 
     # 결과 시각화 및 저장
     with psf.plot.SceneVisualizer(s, "images/my_psf") as sv:
@@ -132,3 +152,5 @@ if __name__ == "__main__":
         plt.xlim(-30, 30)  # x축 범위 설정
         plt.ylim(-10, 10)  # y축 범위 설정
         sv.animate()
+
+    # 점 하나당 움직임을 모두 기록하여 csv로 저장 완료
