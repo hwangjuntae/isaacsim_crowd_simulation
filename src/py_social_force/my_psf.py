@@ -11,16 +11,16 @@ Path("images").mkdir(exist_ok=True)
 def random_spawn_x(left_side=True):
     """왼쪽 또는 오른쪽 스폰 x 좌표를 랜덤으로 생성"""
     if left_side:
-        return random.uniform(-25, -20)  # 왼쪽 스폰 (-25 ~ -20)
+        return random.uniform(-30, 0)  # 왼쪽 스폰 (-25 ~ -20)
     else:
-        return random.uniform(20, 25)  # 오른쪽 스폰 (20 ~ 25)
+        return random.uniform(0, 30)  # 오른쪽 스폰 (20 ~ 25)
 
 def random_goal_x(spawn_x):
     """스폰 위치에 따라 목표 x 좌표를 설정"""
     if spawn_x < 0:
-        return random.uniform(20, 25)  # 목표는 오른쪽
+        return random.uniform(25, 30)  # 목표는 오른쪽
     else:
-        return random.uniform(-25, -20)  # 목표는 왼쪽
+        return random.uniform(-30, -25)  # 목표는 왼쪽
 
 def random_spawn_y():
     """y 좌표를 -5~5 범위에서 생성"""
@@ -28,7 +28,7 @@ def random_spawn_y():
 
 if __name__ == "__main__":
     # 총 인원 설정 변수
-    total_agents = 100  # 설정 가능한 총 인원
+    total_agents = 300  # 설정 가능한 총 인원
     max_left_agents = total_agents // 2  # 왼쪽에서 생성될 인원
     max_right_agents = total_agents // 2  # 오른쪽에서 생성될 인원
 
