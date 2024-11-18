@@ -1,12 +1,11 @@
 # 1. Workspace
 
-<pre><code>
-mkdir -p ~/flow_ws/src
+<pre><code>mkdir -p ~/flow_ws/src
 cd ~/flow_ws/src
 git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 </code></pre>
 
-** edit pke name \<isaacsim_crowd_simulation\> to \<moving_people\> **
+**edit pke name \<isaacsim_crowd_simulation\> to \<moving_people\>**
 
 
 # 2. install dependencies pkgs
