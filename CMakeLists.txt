@@ -15,7 +15,7 @@ find_package(rclpy REQUIRED)
 include_directories(include)
 
 # Install Folder
-install(DIRECTORY launch src
+install(DIRECTORY launch src usd
   DESTINATION share/${PROJECT_NAME}/
 )
 
@@ -36,7 +36,8 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
 
   src/circle_people.py
-  src/crowd_people.py
+  src/special_csv_crowd_people.py
+  src/py_social_force/generate_csv_psf.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

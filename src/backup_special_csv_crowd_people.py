@@ -34,7 +34,8 @@ EXTENSIONS_TO_ENABLE = [
     'omni.kit.scripting',
     'omni.graph.io',
     'omni.anim.curve.core',
-    'omni.isaac.ros2_bridge'
+    'omni.isaac.ros2_bridge',
+    'omni.isaac.dynamic_control',  # 추가된 확장
 ]
 
 # 필요한 확장 활성화
@@ -47,7 +48,7 @@ disable_extension("omni.isaac.ros_bridge")
 # 새로운 확장으로 시뮬레이션 앱 업데이트
 simulation_app.update()
 
-# 새 USD 스테이지를 재시작하여 사람 확장이 로드되었는지 확인합니다
+# 새로운 USD 스테이지를 재시작하여 사람 확장이 로드되었는지 확인합니다
 omni.usd.get_context().new_stage()
 
 # 이제 Pegasus API 및 관련 모듈을 임포트합니다
@@ -66,10 +67,11 @@ class CSVPersonController(PersonController):
         self.agent_id = agent_id
         self.csv_data = csv_data
         self.current_index = 0
+        self._world = World.instance()  # 월드 인스턴스 가져오기
 
     def update(self, dt: float):
-        # 현재 시뮬레이션 시간
-        current_time = self._world.sim_time
+        # 현재 시뮬레이션 시간 가져오기
+        current_time = self._world.current_time
 
         # 시간에 따라 위치 업데이트
         while self.current_index < len(self.csv_data) and self.csv_data.iloc[self.current_index]['time'] <= current_time:
@@ -103,15 +105,18 @@ class PegasusApp:
         # Pegasus 인터페이스 시작
         self.pg = PegasusInterface()
 
-        # 물리학 설정 및 자산 생성용 World 객체 초기화
+        # 필요한 확장 활성화 (이미 활성화되어 있으므로 생략 가능)
+
+        # 새로운 스테이지 로드
+        usd_path = "/root/flow_ws/src/moving_people/usd/straight.usd"
+        omni.usd.get_context().open_stage(usd_path)
+
+        # 월드 객체 초기화
         self.pg._world = World(**self.pg._world_settings)
         self.world = self.pg.world
 
-        # NVIDIA 제공 월드 중 하나를 로드
-        self.pg.load_asset(SIMULATION_ENVIRONMENTS["Curved Gridroom"], "/World/layout")
-
         # CSV 파일 경로
-        csv_path = "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates.csv"
+        csv_path = "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv"
 
         # CSV 데이터 읽기
         self.csv_data = pd.read_csv(csv_path)
@@ -135,7 +140,7 @@ class PegasusApp:
             else:
                 asset_name = "original_female_adult_business_02"
 
-            # 초기 위치은 CSV의 첫 번째 데이터 포인트 사용
+            # 초기 위치는 CSV의 첫 번째 데이터 포인트 사용
             init_x = data.iloc[0]['x']
             init_y = data.iloc[0]['y']
 
@@ -144,11 +149,11 @@ class PegasusApp:
 
             # Person 객체 생성 시 컨트롤러를 전달
             person = Person(
-                f"person_{agent_id}",  # prim_path에서 선행 슬래시 제거
+                f"person_{agent_id}",
                 asset_name,
                 init_pos=[init_x, init_y, 0.0],
                 init_yaw=0.0,
-                controller=controller  # 컨트롤러를 생성자에 전달
+                controller=controller
             )
 
             # 에이전트 딕셔너리에 추가

@@ -34,7 +34,8 @@ EXTENSIONS_TO_ENABLE = [
     'omni.kit.scripting',
     'omni.graph.io',
     'omni.anim.curve.core',
-    'omni.isaac.ros2_bridge'
+    'omni.isaac.ros2_bridge',
+    'omni.isaac.dynamic_control',  # 추가된 확장
 ]
 
 # 필요한 확장 활성화
@@ -70,7 +71,7 @@ class CSVPersonController(PersonController):
 
     def update(self, dt: float):
         # 현재 시뮬레이션 시간 가져오기
-        current_time = self._world.current_time  # 수정된 부분
+        current_time = self._world.current_time
 
         # 시간에 따라 위치 업데이트
         while self.current_index < len(self.csv_data) and self.csv_data.iloc[self.current_index]['time'] <= current_time:
@@ -93,9 +94,12 @@ class PegasusApp:
     Isaac Sim 독립 실행형 앱의 템플릿 클래스.
     """
 
-    def __init__(self):
+    def __init__(self, csv_path="/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv"):
         """
         PegasusApp을 초기화하고 시뮬레이션 환경을 설정하는 메서드입니다.
+
+        Args:
+            csv_path (str): CSV 파일의 경로. 기본값은 "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv"입니다.
         """
 
         # 시뮬레이션을 시작/중지할 타임라인 설정
@@ -104,19 +108,24 @@ class PegasusApp:
         # Pegasus 인터페이스 시작
         self.pg = PegasusInterface()
 
-        # 물리학 설정 및 자산 생성용 World 객체 초기화
+        # 새로운 스테이지 로드
+        usd_path = "/root/flow_ws/src/moving_people/usd/straight.usd"
+        omni.usd.get_context().open_stage(usd_path)
+
+        # 월드 객체 초기화
         self.pg._world = World(**self.pg._world_settings)
         self.world = self.pg.world
 
-        # 지정된 USD 파일 로드
-        usd_path = "/root/flow_ws/src/moving_people/usd/straight.usd"
-        self.pg.load_asset(usd_path, "/World/layout")
-
         # CSV 파일 경로
-        csv_path = "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv"
+        self.csv_path = csv_path
 
         # CSV 데이터 읽기
-        self.csv_data = pd.read_csv(csv_path)
+        try:
+            self.csv_data = pd.read_csv(self.csv_path)
+        except FileNotFoundError:
+            carb.log_error(f"CSV 파일을 찾을 수 없습니다: {self.csv_path}")
+            self.stop_sim = True
+            return
 
         # 에이전트 ID 리스트 추출
         agent_ids = self.csv_data['agent_id'].unique()
@@ -146,11 +155,11 @@ class PegasusApp:
 
             # Person 객체 생성 시 컨트롤러를 전달
             person = Person(
-                f"person_{agent_id}",  # prim_path에서 선행 슬래시 제거
+                f"person_{agent_id}",
                 asset_name,
                 init_pos=[init_x, init_y, 0.0],
                 init_yaw=0.0,
-                controller=controller  # 컨트롤러를 생성자에 전달
+                controller=controller
             )
 
             # 에이전트 딕셔너리에 추가
@@ -162,6 +171,10 @@ class PegasusApp:
         """
         물리적 스텝을 실행하는 메인 루프.
         """
+
+        if self.stop_sim:
+            carb.log_error("시뮬레이션을 시작할 수 없습니다. CSV 파일을 확인하세요.")
+            return
 
         # 시뮬레이션 시작
         self.timeline.play()
@@ -177,8 +190,22 @@ class PegasusApp:
         simulation_app.close()
 
 def main():
+    import argparse
+
+    # 명령줄 인자 파서 생성
+    parser = argparse.ArgumentParser(description="Pegasus Simulation App with CSV Input")
+    parser.add_argument(
+        '--csv_path',
+        type=str,
+        default="/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv",
+        help="시뮬레이션에 사용할 CSV 파일의 경로입니다. 기본값은 '/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv'입니다."
+    )
+
+    # 인자 파싱
+    args = parser.parse_args()
+
     # 템플릿 앱 인스턴스화
-    pg_app = PegasusApp()
+    pg_app = PegasusApp(csv_path=args.csv_path)
 
     # 애플리케이션 루프 실행
     pg_app.run()
