@@ -187,7 +187,7 @@ def run_simulation(run_number, total_agents=20, num_steps=300):
     print(f"[Run {run_number}] Simulation GIF saved to '{output_gif_path}.gif'.")
 
 if __name__ == "__main__":
-    total_runs = 3  # Number of simulations to run
+    total_runs = 1  # Number of simulations to run
 
     for run in range(1, total_runs + 1):
         print(f"Starting simulation run {run}/{total_runs}...")

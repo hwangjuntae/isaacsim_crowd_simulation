@@ -113,7 +113,7 @@ class PegasusApp:
         self.pg.load_asset(usd_path, "/World/layout")
 
         # CSV 파일 경로
-        csv_path = "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates.csv"
+        csv_path = "/root/flow_ws/src/moving_people/src/py_social_force/csv/crowd_coordinates1.csv"
 
         # CSV 데이터 읽기
         self.csv_data = pd.read_csv(csv_path)
