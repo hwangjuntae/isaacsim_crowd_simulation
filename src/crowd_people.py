@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-| File: 9_people.py
-| License: BSD-3-Clause. Copyright (c) 2024, Marcelo Jacinto. All rights reserved.
-| Description: Pegasus API를 사용하여 사람들이 이동하는 시뮬레이션을 실행하는 앱을 빌드하는 예제 파일입니다.
-"""
+
 
 # Isaac Sim을 시작하기 위한 모듈 임포트
 import carb

@@ -28,7 +28,7 @@ def random_spawn_y():
 
 if __name__ == "__main__":
     # 총 인원 설정
-    total_agents = 200  # 총 200명으로 설정
+    total_agents = 20  # 총 200명으로 설정
 
     initial_state = []
     groups = []
