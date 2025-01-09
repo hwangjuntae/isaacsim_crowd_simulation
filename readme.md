@@ -12,7 +12,7 @@ git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 
 ## install pegasus simulator
 
-<code><pre>
+<pre><code>
 clone git 
 
 git clone https://github.com/PegasusSimulator/PegasusSimulator.git
@@ -25,7 +25,7 @@ refer this page, applicate on isaac sim
 [install pegasus](https://pegasussimulator.github.io/PegasusSimulator/source/setup/installation.html#installing-the-pegasus-simulator)
 
 ## install psf(py social force)
-<code><pre>
+<pre><code>
 conda create -n PySocialForce python=3.10 -y
 echo 'alias psf="conda activate PySocialForce"' >> ~/.bashrc
 source ~/.bashrc
@@ -42,7 +42,7 @@ pip install numpy matplotlib
 
 psf execute
 
-<code><pre>
+<pre><code>
 psf
 cd ~/flow_ws/src/moving_people/src/py_social_force/my_psf.py
 python3 my_psf.py
