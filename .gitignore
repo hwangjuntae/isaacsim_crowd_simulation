@@ -1,6 +1,4 @@
 /.vscode
 /src/py_social_force/csv
 /src/py_social_force/images
-usd/
-!usd/carter_ros2.usd
-!usd/straight.usd
+/usd/straight.usd-cache
