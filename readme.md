@@ -2,8 +2,7 @@
 
 <pre><code>mkdir -p ~/flow_ws/src
 cd ~/flow_ws/src
-git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
-</code></pre>
+git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation</code></pre>
 
 **edit pke name \<isaacsim_crowd_simulation\> to \<moving_people\>**
 
@@ -12,11 +11,9 @@ git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 
 ## install pegasus simulator
 
-<pre><code>
-clone git 
+<pre><code>clone git 
 
-git clone https://github.com/PegasusSimulator/PegasusSimulator.git
-</code></pre>
+git clone https://github.com/PegasusSimulator/PegasusSimulator.git</code></pre>
 
 
 refer this page, applicate on isaac sim
@@ -25,8 +22,7 @@ refer this page, applicate on isaac sim
 [install pegasus](https://pegasussimulator.github.io/PegasusSimulator/source/setup/installation.html#installing-the-pegasus-simulator)
 
 ## install psf(py social force)
-<pre><code>
-conda create -n PySocialForce python=3.10 -y
+<pre><code> conda create -n PySocialForce python=3.10 -y
 echo 'alias psf="conda activate PySocialForce"' >> ~/.bashrc
 source ~/.bashrc
 psf
@@ -36,9 +32,8 @@ pip install psutil pyyaml
 pip install pysocialforce[test,plot]
 sudo apt install -y python3 python3-pip
 sudo apt install -y imagemagick
-pip install numpy matplotlib
+pip install numpy matplotlib pandas
 </code></pre>
-
 
 psf execute
 
