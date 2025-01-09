@@ -22,7 +22,7 @@ refer this page, applicate on isaac sim
 [install pegasus](https://pegasussimulator.github.io/PegasusSimulator/source/setup/installation.html#installing-the-pegasus-simulator)
 
 ## install psf(py social force)
-<pre><code> conda create -n PySocialForce python=3.10 -y
+<pre><code>conda create -n PySocialForce python=3.10 -y
 echo 'alias psf="conda activate PySocialForce"' >> ~/.bashrc
 source ~/.bashrc
 psf
@@ -37,8 +37,7 @@ pip install numpy matplotlib pandas
 
 psf execute
 
-<pre><code>
-psf
+<pre><code>psf
 cd ~/flow_ws/src/moving_people/src/py_social_force/my_psf.py
 python3 my_psf.py
 </code></pre>
