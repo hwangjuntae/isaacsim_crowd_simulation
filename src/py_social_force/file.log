@@ -1,2 +1,0 @@
-2024-11-16 20:07:44,312|ERROR:[plot.py:159             __exit__() ] Exception type: <class 'AttributeError'>; Exception value: 'SceneVisualizer' object has no attribute 'set_limits'; Traceback: <traceback object at 0x7f2526dce100>
-2024-11-17 04:14:46,915|ERROR:[plot.py:159             __exit__() ] Exception type: <class 'AttributeError'>; Exception value: 'SceneVisualizer' object has no attribute 'agent_color'; Traceback: <traceback object at 0x7cd1463afac0>

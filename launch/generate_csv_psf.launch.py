@@ -13,12 +13,12 @@ def generate_launch_description():
     )
     steps_arg = DeclareLaunchArgument(
         'steps',
-        default_value='300',
+        default_value='200',
         description='시뮬레이션의 스텝 수'
     )
     runs_arg = DeclareLaunchArgument(
         'runs',
-        default_value='1',
+        default_value='1000',
         description='시뮬레이션을 실행할 총 횟수'
     )
 
