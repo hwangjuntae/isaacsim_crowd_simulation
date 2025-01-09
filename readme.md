@@ -12,11 +12,11 @@ git clone https://github.com/hwangjuntae/isaacsim_crowd_simulation
 
 ## install pegasus simulator
 
-<code>
+<code><pre>
 clone git 
 
 git clone https://github.com/PegasusSimulator/PegasusSimulator.git
-</code>
+</code></pre>
 
 
 refer this page, applicate on isaac sim
